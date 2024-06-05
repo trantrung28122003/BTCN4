@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="layout::link-css"></th:block>
+</head>
+<body>
+<th:block th:replace="layout::header"></th:block>
+<section style="margin-top: 120px">
+    <h1 style="text-align: center" >Danh sách sinh viên</h1>
+    <form class="d-flex input-group w-auto my-auto mb-3 mb-md-0" th:action="@{/sinhvien/search}" method="post" >
+        <input name="hoten" autocomplete="off" type="search" class="form-control rounded" placeholder="Tìm kiếm" />
+        <button class="input-group-text border-0 d-none d-lg-flex" onclick="submitSearch()">
+            <i class="fas fa-search"></i>
+        </button>
+    </form>
+    <table class="table table-bordered table-hover" style="margin-top: 20px">
+        <thead class="table-dark">
+        <tr>
+            <th>MSSV</th>
+            <th>Họ và tên</th>
+            <th>Ngày sinh</th>
+            <th>Email</th>
+            <th>Lớp</th>
+            <th>Môn học</th>
+            <th>Ảnh đại diện</th>
+            <th>Chức năng</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="sinhVien : ${listSinhVien}">
+            <td th:text="${sinhVien.mssv}"></td>
+            <td th:text="${sinhVien.hoTen}"></td>
+            <td th:text="${sinhVien.ngaySinh}"></td>
+            <td th:text="${sinhVien.email}"></td>
+            <td th:text="${sinhVien.lop.tenLop}"></td>
+            <td>
+                <ul>
+                    <li th:each="monHoc : ${sinhVien.getMonHocs()}" th:text="${monHoc.tenMonHoc}"></li>
+                </ul>
+            </td>
+            <td><img th:src="${sinhVien.imageUrl}" style="max-width: 100px; max-height: 100px;"> </td>
+            <td>
+                <a th:href="@{/sinhvien/edit/{id}(id=${sinhVien.mssv})}" class="btn btn-success btn-sm">Edit</a>
+                <a th:href="@{/sinhvien/delete/{id}(id=${sinhVien.mssv})}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Xóa</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</body>
+</html>
